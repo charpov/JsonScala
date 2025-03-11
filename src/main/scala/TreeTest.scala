@@ -4,20 +4,23 @@ case class Tree[+A](root: A, forest: Forest[A])
 
 case class Forest[+A](trees: IndexedSeq[Tree[A]])
 
-private def treeToList[A](tree: Tree[A]): List[Any] = tree.root :: forestToList(tree.forest)
+def writeTree[A](tree: Tree[A]): String =
+   def treeToList(tree: Tree[A]): List[Any]       = tree.root :: forestToList(tree.forest)
+   def forestToList(forest: Forest[A]): List[Any] = forest.trees.map(treeToList).toList
 
-private def forestToList[A](forest: Forest[A]): List[Any] = forest.trees.map(treeToList).toList
+   Json.write(treeToList(tree))
+end writeTree
 
-private def listToTree[A](list: List[Any]): Tree[A] =
-   require(list.nonEmpty)
-   Tree(list.head.asInstanceOf[A], listToForest(list.tail))
+def parseTree[A](str: String): Tree[A] =
+   def listToTree(list: List[Any]): Tree[A] =
+      require(list.nonEmpty)
+      Tree(list.head.asInstanceOf[A], listToForest(list.tail))
 
-private def listToForest[A](list: List[Any]): Forest[A] =
-   Forest(list.toIndexedSeq.map(x => listToTree(x.asInstanceOf[List[Any]])))
+   def listToForest(list: List[Any]): Forest[A] =
+      Forest(list.toIndexedSeq.map(x => listToTree(x.asInstanceOf[List[Any]])))
 
-def writeTree[A](tree: Tree[A]): String = Json.write(treeToList(tree))
-
-def parseTree[A](str: String): Tree[A] = listToTree(Json.parse[List[Any]](str))
+   listToTree(Json.parse[List[Any]](str))
+end parseTree
 
 val small: Tree[Int] = Tree(
   1,
@@ -48,7 +51,9 @@ val comb: Tree[String] =
    println(str1)
    val tree1: Tree[Int] = parseTree(str1)
    println(tree1)
+   assert(tree1 == small)
    val str2: String = writeTree(comb)
    println(str2)
    val tree2: Tree[String] = parseTree(str2)
    println(tree2)
+   assert(tree2 == comb)
