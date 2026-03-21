@@ -1,5 +1,5 @@
-import com.fasterxml.jackson.databind.json.JsonMapper
-import com.fasterxml.jackson.module.scala.{ClassTagExtensions, DefaultScalaModule, JavaTypeable}
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.scala.{ ClassTagExtensions, DefaultScalaModule, JavaTypeable }
 
 import scala.io.Codec
 
@@ -11,5 +11,5 @@ object Json:
 
    def write(obj: Any): String = mapper.writeValueAsString(obj)
 
-   def parse[A : JavaTypeable](str: String): A = mapper.readValue[A](str)
+   def parse[A: JavaTypeable](str: String): A = mapper.readValue[A](str)
 end Json

@@ -1,6 +1,6 @@
-val ScalaJackson = "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.18.3"
+val ScalaJackson = "tools.jackson.module" %% "jackson-module-scala" % "3.1.0"
 
-ThisBuild / scalaVersion := "3.6.4"
+ThisBuild / scalaVersion := "3.8.2"
 ThisBuild / crossPaths   := false
 
 ThisBuild / scalacOptions ++= Seq(
