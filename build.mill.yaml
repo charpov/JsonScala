@@ -1,0 +1,10 @@
+extends: ScalaModule
+scalaVersion: 3.10.0
+scalacOptions:
+  - -deprecation
+  - -encoding:utf-8
+  - -feature
+  - -unchecked
+  - -Wunused:linted
+mvnDeps:
+  - tools.jackson.module::jackson-module-scala:3.2.4
